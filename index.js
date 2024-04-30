@@ -1,7 +1,7 @@
 import { HTTPClient } from "./HL/hf-HTTPClient.js"
 import { Mount } from './HL/hf-Mount.js'
 
-const DandD = new HTTPClient({
+var DandDMonsters = new HTTPClient({
     url: 'https://www.dnd5eapi.co',
     slug: '/api/monsters',
     options: {
@@ -11,12 +11,20 @@ const DandD = new HTTPClient({
     }
 })
 
+function getEach(slug) {
+    DandDMonsters = new HTTPClient({
+        url: 'https://www.dnd5eapi.co',
+        slug: slug,
+        options: {
+            method: "GET",
+            accept: "application/json",
+            redirect: 'follow'
+        }
+    })
+}
 
-DandD.get((value) => {
-    // * for example = value.data
-
+DandDMonsters.get((value) => {
     let testMount = new Mount(value.results, {
-        repeat: false,
         wrapper: '[data-wrapper]',
         el: '[data-list]',
         mount: [
@@ -29,6 +37,12 @@ DandD.get((value) => {
                 hook: '[data-image]',
                 param: 'innerText',
                 value: 'url',
+                map: (x) => {
+                    getEach(x)
+                    DandDMonsters.get((value) => {
+                        return value.xp
+                    })
+                }
             }
         ],
         pageScript: './main.js',
