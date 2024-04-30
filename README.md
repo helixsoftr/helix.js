@@ -21,11 +21,11 @@ To start using the DOM Service Framework in your project, follow these steps:
 
 ```bash
 git clone https://github.com/username/dom-service-framework.git
-
+```
 Include the `{pageName}.js` file in your HTML:
 ```html
 <script src="path/{pageName}.js"></script>
-
+```
 Include the {pageName}.js file
 ```js
 import { HTTPClient } from "./HL/hf-HTTPClient.js"
@@ -63,5 +63,6 @@ DandD.get((value) => {
         pageScript: './main.js',
     })
 })
+```
 
 This README provides an overview of the project, its features, how to get started, where to find documentation, how to contribute, and information about the project's license. Adjust it according to your project's specifics.
