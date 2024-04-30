@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100px;
+        background-color: #333;
+    }
+
+    .list {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        list-style: none;
+    }
+
+    .each {
+        font-size: 25px;
+    }
+
+    .link {
+        color: white;
+        text-decoration: none;
+        transition: .45s;
+    }
+
+    .link:hover {
+        color: yellow;
+    }
+</style>
+
+<body>
+    <div data-wrapper style="display: flex; flex-direction: column;">
+        <div data-list>
+            <a data-link href=""></a>
+            <h1 data-image></h1>
+            <!-- <img data-image src="" alt=""> -->
+        </div>
+    </div>
+    <script src="./index.js" type="module"></script>
+</body>
+
+</html>
