@@ -144,33 +144,42 @@ class Mount {
         });
     }
 
-    map(data, map) {
-        if (typeof map != 'undefined') {
-            let mapped = map(data)
-            return mapped
-        } else {
-            return data
-        }
+    async map(data, map) {
+        let fin
+        await new Promise((resolve) => {
+            if (typeof map != 'undefined') {
+                map(data).then((result) => {
+                    fin = result
+                    resolve()
+                })
+            } else {
+                fin = data
+                resolve()
+            }
+        })
+        return fin
     }
 
     changeNode(param, element, data) {
-        switch (param) {
-            case 'href':
-                element.setAttribute('href', data)
-                break;
-            case 'src':
-                element.setAttribute('src', data)
-                break;
-            case 'innerText':
-                element.innerText = data
-                break;
-            case 'alt':
-                element.alt = data
-                break;
-            default:
-                message('warning', 'Didint Change Anything From Template')
-                break;
-        }
+        data.then(result => {
+            switch (param) {
+                case 'href':
+                    element.setAttribute('href', result)
+                    break;
+                case 'src':
+                    element.setAttribute('src', result)
+                    break;
+                case 'innerText':
+                    element.innerText = result
+                    break;
+                case 'alt':
+                    element.alt = result
+                    break;
+                default:
+                    message('warning', 'Didint Change Anything From Template')
+                    break;
+            }
+        })
     }
 
     mountData() {
@@ -181,7 +190,11 @@ class Mount {
                 this.data.forEach(d => {
                     let dummyNode = this.elNode.cloneNode(true)
                     this.mountParams.forEach(mp => {
-                        this.changeNode(mp.param, dummyNode.querySelector(mp.hook), this.map(d[mp.value], mp.map))
+                        this.changeNode(
+                            mp.param,
+                            dummyNode.querySelector(mp.hook),
+                            this.map(d[mp.value], mp.map)
+                        )
                         this.wrapperNode.appendChild(dummyNode)
                     });
                 });
@@ -189,7 +202,11 @@ class Mount {
                 this.data = this.data[this.took]
                 this.mountParams.forEach(mp => {
                     let dummyNode = this.elNode.cloneNode(true)
-                    this.changeNode(mp.param, dummyNode.querySelector(mp.hook), this.map(this.data[mp.value], mp.map))
+                    this.changeNode(
+                        mp.param,
+                        dummyNode.querySelector(mp.hook),
+                        this.map(this.data[mp.value], mp.map)
+                    )
                     this.wrapperNode.appendChild(dummyNode)
                 });
             }

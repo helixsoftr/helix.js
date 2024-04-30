@@ -25,6 +25,7 @@ function getEach(slug) {
 
 DandDMonsters.get((value) => {
     let testMount = new Mount(value.results, {
+        repeat: true,
         wrapper: '[data-wrapper]',
         el: '[data-list]',
         mount: [
@@ -34,14 +35,24 @@ DandDMonsters.get((value) => {
                 value: 'name',
             },
             {
+                hook: '[data-real]',
+                param: 'innerText',
+                value: 'url',
+            },
+            {
                 hook: '[data-image]',
                 param: 'innerText',
                 value: 'url',
-                map: (x) => {
-                    getEach(x)
-                    DandDMonsters.get((value) => {
-                        return value.xp
-                    })
+                map: async (slug) => {
+                    getEach(slug);
+                    let modified;
+                    await new Promise((resolve) => {
+                        DandDMonsters.get((value) => {
+                            modified = value.xp;
+                            resolve();
+                        });
+                    });
+                    return modified;
                 }
             }
         ],
